@@ -1,136 +1,87 @@
 #ifndef MAIN_H
-
 #define MAIN_H
-
-
-
+#include <stdlib.h>
 #include <stdarg.h>
 
-
+/**
+ * struct flags - struct containing flags to "turn on"
+ * when a flag specifier is passed to _printf()
+ * @plus: flag for the '+' character
+ * @space: flag for the ' ' character
+ * @hash: flag for the '#' character
+ */
+typedef struct flags
+{
+	int plus;
+	int space;
+	int hash;
+} flags_t;
 
 /**
-
-   * struct spec - A new struct type holding specifier and its conversion printer
-
-    * @sp: conversion specifier
-
-     * @f: function pointer to function that prints the relevant data type
-
-      */
-
-typedef struct spec
-
+ * struct printHandler - struct to choose the right function depending
+ * on the format specifier passed to _printf()
+ * @c: format specifier
+ * @f: pointer to the correct printing function
+ */
+typedef struct printHandler
 {
+	char c;
+	int (*f)(va_list ap, flags_t *f);
+} ph;
 
-		char *sp;
+/* print_nums */
+int print_int(va_list l, flags_t *f);
+void print_number(int n);
+int print_unsigned(va_list l, flags_t *f);
+int count_digit(int i);
 
-			int (*f)(va_list);
+/* print_bases */
 
-} spec_t;
+int print_hex(va_list l, flags_t *f);
+int print_hex_big(va_list l, flags_t *f);
+int print_binary(va_list l, flags_t *f);
+int print_octal(va_list l, flags_t *f);
 
+/* converter */
 
+char *convert(unsigned long int num, int base, int lowercase);
 
-
-
-int _putchar(char c);
+/* _printf */
 
 int _printf(const char *format, ...);
 
-int _vprintf(spec_t op[], const char *format, va_list aps);
+/* get_print */
 
-int print_c(va_list ap);
+int (*get_print(char s))(va_list, flags_t *);
+/* get_flag */
 
-int print_s(va_list ap);
+int get_flag(char s, flags_t *f);
 
-int print_i(va_list ap);
+/* print_alpha */
 
-int p_conv(unsigned int i, unsigned int base, int l);
+int print_string(va_list l, flags_t *f);
+int print_char(va_list l, flags_t *f);
 
-int print_b(va_list ap);
-
-int print_ui(va_list ap);
-
-int print_oct(va_list ap);
-
-int p_hex(unsigned int i, unsigned int base, int c, int l);
-
-int print_hex(va_list ap);
-
-int print_Hex(va_list ap);
-
-int print_cs(va_list ap);
-
-int conv_rot13(va_list ap);
-
-int _rev(va_list ap);
-
-
-
-#endif#ifndef MAIN_H
-
-#define MAIN_H
-
-
-
-#include <stdarg.h>
-
-
-
-/**
-
-   * struct spec - A new struct type holding specifier and its conversion printer
-
-    * @sp: conversion specifier
-
-     * @f: function pointer to function that prints the relevant data type
-
-      */
-
-typedef struct spec
-
-{
-
-		char *sp;
-
-			int (*f)(va_list);
-
-} spec_t;
-
-
-
-
+/* write_funcs */
 
 int _putchar(char c);
+int _puts(char *str);
 
-int _printf(const char *format, ...);
+/* print_custom */
 
-int _vprintf(spec_t op[], const char *format, va_list aps);
+int print_rot13(va_list l, flags_t *f);
+int print_rev(va_list l, flags_t *f);
+int print_bigS(va_list l, flags_t *f);
 
-int print_c(va_list ap);
+/* print_address */
 
-int print_s(va_list ap);
+int print_address(va_list l, flags_t *f);
 
-int print_i(va_list ap);
+/* print_percent */
 
-int p_conv(unsigned int i, unsigned int base, int l);
+int print_percent(va_list l, flags_t *f);
 
-int print_b(va_list ap);
 
-int print_ui(va_list ap);
-
-int print_oct(va_list ap);
-
-int p_hex(unsigned int i, unsigned int base, int c, int l);
-
-int print_hex(va_list ap);
-
-int print_Hex(va_list ap);
-
-int print_cs(va_list ap);
-
-int conv_rot13(va_list ap);
-
-int _rev(va_list ap);
 
 
 
